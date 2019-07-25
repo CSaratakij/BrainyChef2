@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: e593138d529889644a2b73a36c0047a7
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PSL Text Pro
+  fontNames:
+  - PSL Text Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 03c527d0ba1975af5afde150739bac42, type: 3}
+  - {fileID: 12800000, guid: e51caee2b2643ede3aff940b2e38ae57, type: 3}
+  - {fileID: 12800000, guid: 37fd9b134df8c77449c4c489fa8e458e, type: 3}
+  - {fileID: 12800000, guid: 7fc1e7c715cd8dd4fb239436b6e1dea4, type: 3}
+  - {fileID: 12800000, guid: f2d3b2f9cf05e7440be28f6cb9d58387, type: 3}
+  - {fileID: 12800000, guid: 467200ffcb61f3b43a67c20cf4c91378, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

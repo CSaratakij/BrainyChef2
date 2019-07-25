@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 7158dafa4d35b9b2bbda6f8923829dec
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PSL Empire Pro
+  fontNames:
+  - PSL Empire Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2bf1a467c1b511145a5efe4c10b24425, type: 3}
+  - {fileID: 12800000, guid: a5d210484150ccc4e9380d8ae0f38367, type: 3}
+  - {fileID: 12800000, guid: e2986d39cf59e284da884358bbdecefc, type: 3}
+  - {fileID: 12800000, guid: ed6f40eb2b67fbf44b54a813d4ebbcfe, type: 3}
+  - {fileID: 12800000, guid: 260e332d2a22aca9889ed452aed6190c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

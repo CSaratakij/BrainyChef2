@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: 95542e3fb458029d9beded0907a1ca83
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PSL Display Pro
+  fontNames:
+  - PSL Display Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: fbd5903514eec404ea00ee5b7ad95c9f, type: 3}
+  - {fileID: 12800000, guid: ce9cfb4525a2d5c4aab6ab963884b855, type: 3}
+  - {fileID: 12800000, guid: 1b2b3eb89e560854aab822cc55c0653f, type: 3}
+  - {fileID: 12800000, guid: 242f6cbb856fa5df1aff84e0e1cfa3f7, type: 3}
+  - {fileID: 12800000, guid: 5f4c7a4d682599d4ca9fa7ca01d7c2d6, type: 3}
+  - {fileID: 12800000, guid: 1b85589d714925402bfa9126b564e3a3, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
