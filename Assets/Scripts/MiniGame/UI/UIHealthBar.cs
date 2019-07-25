@@ -8,9 +8,15 @@ namespace BrainyChef
     [RequireComponent(typeof(Slider))]
     public class UIHealthBar : MonoBehaviour
     {
+        const int UPDATE_RATE = 3;
+
         [SerializeField]
         Status health;
 
+        [SerializeField]
+        Transform origin;
+
+        Camera camera;
         Slider slider;
 
         void Awake()
@@ -21,7 +27,15 @@ namespace BrainyChef
 
         void OnEnable()
         {
-            UpdateUI(health.Current);
+            UpdateUIValue(health.Current);
+        }
+
+        void Update()
+        {
+            if ((Time.frameCount % UPDATE_RATE) == 0)
+            {
+                UpdateUIPosition();
+            }
         }
 
         void OnDestroy()
@@ -31,6 +45,7 @@ namespace BrainyChef
 
         void Initialize()
         {
+            camera = Camera.main;
             slider = GetComponent<Slider>();
         }
 
@@ -46,13 +61,19 @@ namespace BrainyChef
 
         void OnValueChanged(float value)
         {
-            UpdateUI(value);
+            UpdateUIValue(value);
         }
 
-        void UpdateUI(float value)
+        void UpdateUIValue(float value)
         {
             slider.value = value;
             slider.maxValue = health.Maximum;
+        }
+
+        void UpdateUIPosition()
+        {
+            Vector2 screenPoint = camera.WorldToScreenPoint(origin.position);
+            transform.position = screenPoint;
         }
     }
 }
