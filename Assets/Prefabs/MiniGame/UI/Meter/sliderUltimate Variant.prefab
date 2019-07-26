@@ -7,16 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 929463713521148793, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
-        type: 3}
-      propertyPath: m_Name
-      value: sliderUltimate
-      objectReference: {fileID: 0}
-    - target: {fileID: 929463713521148793, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 929463713521148792, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,6 +112,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 929463713521148793, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
+        type: 3}
+      propertyPath: m_Name
+      value: sliderUltimate Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 929463713521148793, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 929463714757262042, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -131,6 +131,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 929463713521148798, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
+        type: 3}
+      propertyPath: noTimer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 929463713521148798, guid: ab1f94e14a2fa0c31b270f6b0c276ce8,
+        type: 3}
+      propertyPath: noDecreasement
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab1f94e14a2fa0c31b270f6b0c276ce8, type: 3}

@@ -2,13 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BrainyChef
 {
-    public class PlayerController : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
-        internal Action<float> OnAttacking;
+        internal Action OnAttacking;
         internal Action OnAttackFinished;
 
         [SerializeField]
@@ -16,16 +15,13 @@ namespace BrainyChef
         int attackPoint;
 
         [SerializeField]
-        Transform enemy;
+        Transform player;
 
         [SerializeField]
         Status playerHealth;
 
         [SerializeField]
         Status playerEnergy;
-
-        [SerializeField]
-        Status enemyHealth;
 
         public int AttackPoint => attackPoint;
 
@@ -51,19 +47,16 @@ namespace BrainyChef
 
         void OnValueChanged(float value)
         {
-            //if player hit by enemy -> add player an energy
+            //if player hit by player -> blinking (change material to red)
         }
 
-        public void AttackEnemy(float value)
+        public void AttackPlayer()
         {
-            enemyHealth.Remove(value);
-            OnAttacking?.Invoke(value);
+            playerHealth.Remove(attackPoint);
+            playerEnergy.Restore(20);
+
+            OnAttacking?.Invoke();
             OnAttackFinished?.Invoke();
-        }
-
-        public void AttackEnemy()
-        {
-            AttackEnemy(attackPoint);
         }
     }
 }

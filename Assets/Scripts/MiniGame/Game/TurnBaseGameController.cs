@@ -137,9 +137,12 @@ namespace BrainyChef
             gameTimer.OnStopped += GameTimer_OnStopped;
             miniGameController.OnGameOver += OnGameOver;
 
-            btnAttack.onClick.AddListener(() => {
+            btnAttack.onClick.AddListener(() =>
+            {
                 if (isInAttackPhrase || turn == Turn.Enemy)
                     return;
+
+                actionCanvasGroup.interactable = false;
 
                 isInAttackPhrase = true;
                 gameTimer.Pause(true);
@@ -154,6 +157,8 @@ namespace BrainyChef
             });
 
             sliderAttack.OnValueMax += SliderAttack_OnValueMax;
+            sliderAttack.OnTimeoutValue += SliderAttack_OnTimeoutValue;
+
             playerController.OnAttacking += Player_OnAttacking;
             playerController.OnAttackFinished += Player_OnAttackFinished;
         }
@@ -165,11 +170,22 @@ namespace BrainyChef
 
         void SliderAttack_OnValueMax(float value)
         {
-            sliderAttack.gameObject.SetActive(false);
-            panelMeter.gameObject.SetActive(false);
-
+            HidePanelMeter();
             playerController.AttackEnemy();
             Debug.Log("Player attack..");
+        }
+
+        void SliderAttack_OnTimeoutValue(float value)
+        {
+            HidePanelMeter();
+            playerController.AttackEnemy(playerController.AttackPoint * 0.5f);
+            Debug.Log("Player attack..");
+        }
+
+        void HidePanelMeter()
+        {
+            sliderAttack.gameObject.SetActive(false);
+            panelMeter.gameObject.SetActive(false);
         }
 
         void UnsubscribeEvent()
@@ -193,9 +209,10 @@ namespace BrainyChef
             NextTurn();
         }
 
-        void Player_OnAttacking()
+        void Player_OnAttacking(float value)
         {
-            lblEnemyDamageReceived.text = playerController.AttackPoint.ToString();
+            bool isMakingLessDamage = value < playerController.AttackPoint;
+            lblEnemyDamageReceived.text = (isMakingLessDamage) ? value.ToString() : "Critical : " + value;
             lblEnemyDamageReceivedAnim.SetTrigger("Play");
         }
 

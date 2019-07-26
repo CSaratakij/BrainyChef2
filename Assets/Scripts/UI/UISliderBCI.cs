@@ -10,6 +10,7 @@ namespace BrainyChef
     {
         internal Action<float> OnValueMax;
         internal Action<float> OnValueMin;
+        internal Action<float> OnTimeoutValue;
 
         [SerializeField]
         InputBCIType inputBCIType;
@@ -23,19 +24,48 @@ namespace BrainyChef
         [SerializeField]
         bool noDecreasement = false;
 
+        [SerializeField]
+        bool noTimer = false;
+
+        [SerializeField]
+        Text lblTimeout;
+
+        Timer timer;
+
         void Awake()
         {
+            Initialize();
             SubscribeEvent();
-        }
-
-        void OnDisable()
-        {
-            slider.value = 20;
         }
 
         void Update()
         {
             TickHandler();
+        }
+
+        void OnEnable()
+        {
+            if (noTimer)
+            {
+                lblTimeout.text = string.Empty;
+                return;
+            }
+
+            timer.Reset();
+            timer.CountDown();
+
+            UpdateUI(timer.Current);
+        }
+
+        void OnDisable()
+        {
+            slider.value = 20;
+            timer.Reset();
+        }
+
+        void Initialize()
+        {
+            timer = GetComponent<Timer>();
         }
 
         void TickHandler()
@@ -52,7 +82,32 @@ namespace BrainyChef
 
         void SubscribeEvent()
         {
+            timer.OnStopped += OnStopped;
+            timer.OnTick += OnTick;
+            OnValueMax += Self_OnValueMax;
             slider.onValueChanged.AddListener((value) => OnValueChanged(value));
+        }
+
+        void UnsubscribeEvent()
+        {
+            timer.OnStopped -= OnStopped;
+            timer.OnTick -= OnTick;
+            OnValueMax -= Self_OnValueMax;
+        }
+
+        void Self_OnValueMax(float value)
+        {
+            timer.Pause(true);
+        }
+
+        void OnTick(float value)
+        {
+            UpdateUI(value);
+        }
+
+        void OnStopped()
+        {
+            OnTimeoutValue?.Invoke(slider.value);
         }
 
         void OnValueChanged(float value)
@@ -67,6 +122,11 @@ namespace BrainyChef
                 Debug.Log("Min");
                 OnValueMin?.Invoke(value);
             }
+        }
+
+        void UpdateUI(float value)
+        {
+            lblTimeout.text = string.Format("({0:0})", timer.Current);
         }
     }
 }
