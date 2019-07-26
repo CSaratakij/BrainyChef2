@@ -178,11 +178,27 @@ namespace BrainyChef
                 panelMeter.gameObject.SetActive(true);
             });
 
+            btnUltimate.onClick.AddListener(() =>
+            {
+                if (isInAttackPhrase || turn == Turn.Enemy)
+                    return;
+
+                actionCanvasGroup.interactable = false;
+
+                isInAttackPhrase = true;
+                gameTimer.Pause(true);
+
+                sliderUltimate.gameObject.SetActive(true);
+                panelMeter.gameObject.SetActive(true);
+            });
+
             sliderAttack.OnValueMax += SliderAttack_OnValueMax;
             sliderAttack.OnTimeoutValue += SliderAttack_OnTimeoutValue;
 
             sliderHealth.OnValueMax += SliderHeal_OnValueMax;
             sliderHealth.OnTimeoutValue += SliderHeal_OnTimeoutValue;
+
+            sliderUltimate.OnValueMax += SliderUltimate_OnValueMax;
 
             playerController.OnAttacking += Player_OnAttacking;
             playerController.OnAttackFinished += Player_OnAttackFinished;
@@ -220,6 +236,14 @@ namespace BrainyChef
             StartCoroutine(SliderHeal_Callback());
         }
 
+        void SliderUltimate_OnValueMax(float value)
+        {
+            HidePanelMeter();
+            Debug.Log("Use ultimate");
+            playerController.AttackEnemy(playerController.AttackPoint * 2);
+            playerEnergy.Clear();
+        }
+
         IEnumerator SliderHeal_Callback()
         {
             yield return new WaitForSeconds(1.5f);
@@ -233,6 +257,8 @@ namespace BrainyChef
         void HidePanelMeter()
         {
             sliderAttack.gameObject.SetActive(false);
+            sliderHealth.gameObject.SetActive(false);
+            sliderUltimate.gameObject.SetActive(false);
             panelMeter.gameObject.SetActive(false);
         }
 
@@ -245,6 +271,15 @@ namespace BrainyChef
             playerController.OnAttackFinished -= Player_OnAttackFinished;
 
             sliderAttack.OnValueMax -= SliderAttack_OnValueMax;
+            sliderAttack.OnTimeoutValue -= SliderAttack_OnTimeoutValue;
+
+            sliderHealth.OnValueMax -= SliderHeal_OnValueMax;
+            sliderHealth.OnTimeoutValue -= SliderHeal_OnTimeoutValue;
+
+            sliderUltimate.OnValueMax -= SliderUltimate_OnValueMax;
+
+            playerController.OnAttacking -= Player_OnAttacking;
+            playerController.OnAttackFinished -= Player_OnAttackFinished;
 
             enemyController.OnAttacking -= Enemy_OnAttacking;
             enemyController.OnAttackFinished -= Enemy_OnAttackFinished;

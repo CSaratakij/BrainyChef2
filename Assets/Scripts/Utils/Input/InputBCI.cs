@@ -50,7 +50,7 @@ namespace BrainyChef
 
         void OnDestroy()
         {
-            serialPort.Close();
+            /* serialPort.Close(); */
         }
 
         void Initialize()
@@ -62,6 +62,7 @@ namespace BrainyChef
 
             serialPort = new SerialPort(portName, buadRate);
             serialPort.ReadTimeout = 101;
+
             serialPort.Open();
 
             serialPollingWait = new WaitForSeconds(SERIAL_POLLING_RATE);

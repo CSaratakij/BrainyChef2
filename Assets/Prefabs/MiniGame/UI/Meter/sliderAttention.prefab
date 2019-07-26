@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d124e5cb583e0bab1a3ecda6f710da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBCI: 30
+  maxBCI: 55
   inputBCIType: 0
   increaseRate: 40
   slider: {fileID: 929463713521148799}
@@ -199,8 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de78c6981136d5ed4b10c4f6798b36b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTime: 10
-  maxTime: 10
+  currentTime: 20
+  maxTime: 20
   isPause: 0
 --- !u!1 &929463714757262043
 GameObject:

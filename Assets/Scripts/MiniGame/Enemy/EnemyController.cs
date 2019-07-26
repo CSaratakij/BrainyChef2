@@ -18,6 +18,9 @@ namespace BrainyChef
         Transform player;
 
         [SerializeField]
+        float incrasePlayerEnergyRate = 1;
+
+        [SerializeField]
         Status playerHealth;
 
         [SerializeField]
@@ -53,7 +56,7 @@ namespace BrainyChef
         public void AttackPlayer()
         {
             playerHealth.Remove(attackPoint);
-            playerEnergy.Restore(20);
+            playerEnergy.Restore(incrasePlayerEnergyRate);
 
             OnAttacking?.Invoke();
             OnAttackFinished?.Invoke();

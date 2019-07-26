@@ -13,6 +13,12 @@ namespace BrainyChef
         internal Action<float> OnTimeoutValue;
 
         [SerializeField]
+        float minBCI = 1;
+
+        [SerializeField]
+        float maxBCI = 200;
+
+        [SerializeField]
         InputBCIType inputBCIType;
 
         [SerializeField]
@@ -70,14 +76,31 @@ namespace BrainyChef
 
         void TickHandler()
         {
+            float value = 0.0f;
+
             if (InputBCI.Instance.IsDeviceAvailable)
             {
                 //TODO (bridge InputBCI here...)
+                float rawValue = (inputBCIType == InputBCIType.Attention) ? InputBCI.Instance.Attention : InputBCI.Instance.Meditation;
+                float processedValue = 0.0f;
+
+                if (rawValue >= maxBCI)
+                {
+                    processedValue = 1.0f;
+                }
+                else if (rawValue < minBCI)
+                {
+                    processedValue = -1.0f * 0.5f;
+                }
+
+                value = (processedValue * increaseRate) * Time.deltaTime;
             }
             else
             {
-                slider.value += (Input.GetAxisRaw("Vertical") * increaseRate) * Time.deltaTime;
+                value = (Input.GetAxisRaw("Vertical") * increaseRate) * Time.deltaTime;
             }
+
+            slider.value += value;
         }
 
         void SubscribeEvent()
