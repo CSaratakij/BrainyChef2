@@ -7,7 +7,16 @@ namespace BrainyChef
 {
     public class UITimer : MonoBehaviour
     {
-        const string FORMAT = "({0:00} : {1:00})";
+        const string TWO_DIGIT_FORMAT = "({0:00}:{1:00})";
+
+        [SerializeField]
+        string format = "{0}";
+
+        [SerializeField]
+        string onZeroText = "";
+
+        [SerializeField]
+        bool useTwoDigitNumber = false;
 
         [SerializeField]
         Text txtTimer;
@@ -47,9 +56,23 @@ namespace BrainyChef
 
         void UpdateUI(float value)
         {
-            int minute = (int)(value / 60);
-            float seconds = value % 60;
-            txtTimer.text = string.Format(FORMAT, minute, seconds);
+            if (useTwoDigitNumber)
+            {
+                int minute = (int)(value / 60);
+                float seconds = value % 60;
+                txtTimer.text = string.Format(TWO_DIGIT_FORMAT, minute, seconds);
+            }
+            else
+            {
+                if (onZeroText != "" && value < 1.0f)
+                {
+                    txtTimer.text = onZeroText;
+                }
+                else
+                {
+                    txtTimer.text = string.Format(format, value);
+                }
+            }
         }
     }
 }

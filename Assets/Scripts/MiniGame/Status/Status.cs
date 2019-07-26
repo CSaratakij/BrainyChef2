@@ -15,6 +15,7 @@ namespace BrainyChef
         [SerializeField]
         float maximum;
 
+        public bool IsEmpty => (current == 0);
         public float Current => current;
         public float Maximum => maximum;
 
