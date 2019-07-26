@@ -98,6 +98,9 @@ namespace BrainyChef
         [SerializeField]
         UISliderBCI sliderUltimate;
 
+        [SerializeField]
+        RectTransform panelHealthRestore;
+
         bool hasWinner;
         bool isInAttackPhrase;
 
@@ -119,6 +122,7 @@ namespace BrainyChef
 
             btnUltimate.gameObject.SetActive(false);
             countdownMenu.gameObject.SetActive(true);
+            panelHealthRestore.gameObject.SetActive(false);
 
             initGameTimer.CountDown();
         }
@@ -160,8 +164,25 @@ namespace BrainyChef
                 panelMeter.gameObject.SetActive(true);
             });
 
+            btnHeal.onClick.AddListener(() =>
+            {
+                if (isInAttackPhrase || turn == Turn.Enemy)
+                    return;
+
+                actionCanvasGroup.interactable = false;
+
+                isInAttackPhrase = true;
+                gameTimer.Pause(true);
+
+                sliderHealth.gameObject.SetActive(true);
+                panelMeter.gameObject.SetActive(true);
+            });
+
             sliderAttack.OnValueMax += SliderAttack_OnValueMax;
             sliderAttack.OnTimeoutValue += SliderAttack_OnTimeoutValue;
+
+            sliderHealth.OnValueMax += SliderHeal_OnValueMax;
+            sliderHealth.OnTimeoutValue += SliderHeal_OnTimeoutValue;
 
             playerController.OnAttacking += Player_OnAttacking;
             playerController.OnAttackFinished += Player_OnAttackFinished;
@@ -180,6 +201,33 @@ namespace BrainyChef
         {
             HidePanelMeter();
             playerController.AttackEnemy(playerController.AttackPoint * 0.5f);
+        }
+
+        void SliderHeal_OnValueMax(float value)
+        {
+            HidePanelMeter();
+
+            playerHealth.Restore(20);
+            panelHealthRestore.gameObject.SetActive(true);
+
+            Debug.Log("Health is restore..");
+            StartCoroutine(SliderHeal_Callback());
+        }
+
+        void SliderHeal_OnTimeoutValue(float value)
+        {
+            HidePanelMeter();
+            StartCoroutine(SliderHeal_Callback());
+        }
+
+        IEnumerator SliderHeal_Callback()
+        {
+            yield return new WaitForSeconds(1.5f);
+
+            panelHealthRestore.gameObject.SetActive(false);
+            isInAttackPhrase = false;
+
+            NextTurn();
         }
 
         void HidePanelMeter()
