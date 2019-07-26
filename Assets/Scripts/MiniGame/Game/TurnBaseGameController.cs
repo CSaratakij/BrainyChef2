@@ -31,7 +31,13 @@ namespace BrainyChef
         PlayerController playerController;
 
         [SerializeField]
+        EnemyController enemyController;
+
+        [SerializeField]
         Status playerHealth;
+
+        [SerializeField]
+        Status playerEnergy;
 
         [SerializeField]
         Status enemyHealth;
@@ -54,6 +60,12 @@ namespace BrainyChef
 
         [SerializeField]
         CanvasGroup splashCanvasGroup;
+
+        [SerializeField]
+        Text lblPlayerDamageReceived;
+
+        [SerializeField]
+        Animator lblPlayerDamageReceivedAnim;
 
         [SerializeField]
         Text lblEnemyDamageReceived;
@@ -101,6 +113,8 @@ namespace BrainyChef
         {
             lblTurn.text = turn.ToString() + "Turn";
             lblTurnInSplash.text = turn.ToString() + "Turn";
+
+            lblPlayerDamageReceived.text = "";
             lblEnemyDamageReceived.text = "";
 
             btnUltimate.gameObject.SetActive(false);
@@ -118,11 +132,6 @@ namespace BrainyChef
             else if (!isInAttackPhrase && gameTimer.IsPause)
             {
                 gameTimer.Pause(false);
-            }
-
-            if (turn == Turn.Enemy)
-            {
-                EnemyHandler();
             }
         }
 
@@ -147,13 +156,8 @@ namespace BrainyChef
                 isInAttackPhrase = true;
                 gameTimer.Pause(true);
 
-                //Show attent meter then get value after timeout
                 sliderAttack.gameObject.SetActive(true);
                 panelMeter.gameObject.SetActive(true);
-
-                //then
-                /* playerController.AttackEnemy(); */
-                /* Debug.Log("Player attack.."); */
             });
 
             sliderAttack.OnValueMax += SliderAttack_OnValueMax;
@@ -161,25 +165,21 @@ namespace BrainyChef
 
             playerController.OnAttacking += Player_OnAttacking;
             playerController.OnAttackFinished += Player_OnAttackFinished;
-        }
 
-        void EnemyHandler()
-        {
-
+            enemyController.OnAttacking += Enemy_OnAttacking;
+            enemyController.OnAttackFinished += Enemy_OnAttackFinished;
         }
 
         void SliderAttack_OnValueMax(float value)
         {
             HidePanelMeter();
             playerController.AttackEnemy();
-            Debug.Log("Player attack..");
         }
 
         void SliderAttack_OnTimeoutValue(float value)
         {
             HidePanelMeter();
             playerController.AttackEnemy(playerController.AttackPoint * 0.5f);
-            Debug.Log("Player attack..");
         }
 
         void HidePanelMeter()
@@ -192,9 +192,14 @@ namespace BrainyChef
         {
             initGameTimer.OnStopped -= InitGameTimer_OnStopped;
             gameTimer.OnStopped -= GameTimer_OnStopped;
+
             playerController.OnAttacking -= Player_OnAttacking;
             playerController.OnAttackFinished -= Player_OnAttackFinished;
+
             sliderAttack.OnValueMax -= SliderAttack_OnValueMax;
+
+            enemyController.OnAttacking -= Enemy_OnAttacking;
+            enemyController.OnAttackFinished -= Enemy_OnAttackFinished;
         }
 
         void InitGameTimer_OnStopped()
@@ -212,8 +217,14 @@ namespace BrainyChef
         void Player_OnAttacking(float value)
         {
             bool isMakingLessDamage = value < playerController.AttackPoint;
-            lblEnemyDamageReceived.text = (isMakingLessDamage) ? value.ToString() : "Critical : " + value;
+            lblEnemyDamageReceived.text = (isMakingLessDamage) ? value.ToString() : "(Critical)\n" + value;
             lblEnemyDamageReceivedAnim.SetTrigger("Play");
+        }
+
+        void Enemy_OnAttacking()
+        {
+            lblPlayerDamageReceived.text = enemyController.AttackPoint.ToString();
+            lblPlayerDamageReceivedAnim.SetTrigger("Play");
         }
 
         void Player_OnAttackFinished()
@@ -226,6 +237,19 @@ namespace BrainyChef
         {
             yield return new WaitForSeconds(1.5f);
             lblEnemyDamageReceived.text = "";
+            NextTurn();
+        }
+
+        void Enemy_OnAttackFinished()
+        {
+            isInAttackPhrase = false;
+            StartCoroutine(Enemy_OnAttackFinished_Callback());
+        }
+
+        IEnumerator Enemy_OnAttackFinished_Callback()
+        {
+            yield return new WaitForSeconds(1.5f);
+            lblPlayerDamageReceived.text = "";
             NextTurn();
         }
 
@@ -243,7 +267,9 @@ namespace BrainyChef
             turn = (oldTurn == Turn.Player) ? Turn.Enemy : Turn.Player;
 
             Debug.Log("Current turn : " + turn.ToString());
+
             actionCanvasGroup.interactable = (turn == Turn.Player);
+            btnUltimate.interactable = (turn == Turn.Player);
 
             gameTimer.Reset();
             StartCoroutine(NextTurn_Callback(turn));
@@ -261,6 +287,22 @@ namespace BrainyChef
 
             OnTurnChanged?.Invoke(turn);
             gameTimer.CountDown();
+
+            switch (turn)
+            {
+                case Turn.Player:
+                    bool canUseUltimate = (playerEnergy.Current >= playerEnergy.Maximum);
+                    btnUltimate.gameObject.SetActive(canUseUltimate);
+                    break;
+
+                case Turn.Enemy:
+                    gameTimer.Pause(true);
+                    enemyController.AttackPlayer();
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         void OnGameOver()
